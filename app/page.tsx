@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { meaningModel } from "./data/meaningModel";
 
 type View = "human" | "accessibility" | "agent" | "headless";
 
@@ -49,10 +50,10 @@ export default function Home() {
       >
         {activeView === "human" && (
           <>
-            <h2>Conversion Dashboard</h2>
-            <p>Conversion Rate: 42%</p>
-            <p>Date Range: Last 30 Days</p>
-            <button>Export Report</button>
+            <h2>{meaningModel.title}</h2>
+            <p>Conversion Rate: {meaningModel.conversionRate}</p>
+            <p>Date Range: {meaningModel.dateRange}</p>
+            <button>{meaningModel.primaryAction}</button>
           </>
         )}
 
@@ -60,10 +61,10 @@ export default function Home() {
           <>
             <h2>Accessibility View</h2>
             <ul>
-              <li>Heading: Conversion Dashboard</li>
-              <li>Primary Action: Export Report</li>
-              <li>Filter: Date Range</li>
-              <li>Metric: Conversion Rate</li>
+              <li>Heading: {meaningModel.title}</li>
+              <li>Primary Action: {meaningModel.primaryAction}</li>
+              <li>Filter: {meaningModel.dateRange}</li>
+              <li>Metric: {meaningModel.conversionRate}</li>
             </ul>
           </>
         )}
@@ -71,22 +72,24 @@ export default function Home() {
         {activeView === "agent" && (
           <>
             <h2>Agent View</h2>
-            <pre>{`{
-  "pagePurpose": "Analyze conversion performance",
-  "primaryTask": "Export Report",
-  "availableActions": ["Export Report"]
-}`}</pre>
+            <pre>
+              {JSON.stringify(
+                {
+                  pagePurpose: meaningModel.pagePurpose,
+                  primaryTask: meaningModel.primaryAction,
+                  availableActions: meaningModel.availableActions,
+                },
+                null,
+                2
+              )}
+            </pre>
           </>
         )}
 
         {activeView === "headless" && (
           <>
             <h2>Headless View</h2>
-            <pre>{`{
-  "intent": "Export conversion report",
-  "entities": ["conversionRate", "dateRange", "report"],
-  "actions": ["exportReport"]
-}`}</pre>
+            <pre>{JSON.stringify(meaningModel, null, 2)}</pre>
           </>
         )}
       </div>
