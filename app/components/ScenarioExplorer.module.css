@@ -1,0 +1,213 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.scenarioPanel {
+  display: grid;
+  grid-template-columns: minmax(16rem, 0.72fr) minmax(0, 1.8fr);
+  gap: 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.78);
+  padding: 0.9rem;
+  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.06);
+}
+
+.scenarioIntro {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.35rem;
+}
+
+.eyebrow {
+  color: rgb(79, 70, 229);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.scenarioIntro h2 {
+  margin: 0;
+  color: rgb(15, 23, 42);
+  font-size: 1.05rem;
+  font-weight: 820;
+  line-height: 1.1;
+}
+
+.scenarioIntro p {
+  margin: 0;
+  color: rgb(51, 65, 85);
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.scenarioList {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.scenarioButton {
+  display: flex;
+  min-height: 3.25rem;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.25rem;
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  border-radius: 0.7rem;
+  background: rgba(248, 250, 252, 0.72);
+  color: rgb(15, 23, 42);
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0.62rem 0.7rem;
+  text-align: left;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.scenarioButton:hover {
+  border-color: rgba(79, 70, 229, 0.34);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.07);
+  transform: translateY(-1px);
+}
+
+.scenarioButton strong {
+  display: -webkit-box;
+  overflow: hidden;
+  color: rgb(15, 23, 42);
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1.16;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.scenarioButton span {
+  color: rgb(71, 85, 105);
+  font-size: 0.66rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.activeScenario {
+  border-color: rgba(37, 99, 235, 0.78);
+  background: rgba(239, 246, 255, 0.96);
+  box-shadow:
+    0 0 0 1px rgba(37, 99, 235, 0.12),
+    0 12px 28px rgba(37, 99, 235, 0.09);
+}
+
+.modePanel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.78);
+  padding: 0.7rem 0.85rem;
+  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.05);
+}
+
+.modeLabel {
+  color: rgb(79, 70, 229);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.modeToggle {
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.25rem;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 999px;
+  background: rgba(241, 245, 249, 0.92);
+  padding: 0.25rem;
+}
+
+.modeButton {
+  min-height: 2rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: rgb(71, 85, 105);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1;
+  padding: 0 0.85rem;
+  white-space: nowrap;
+}
+
+.modeButton:hover {
+  color: rgb(15, 23, 42);
+}
+
+.activeMode {
+  background: rgb(15, 23, 42);
+  color: white;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.16);
+}
+
+.activeMode:hover {
+  color: white;
+}
+
+@media (max-width: 1100px) {
+  .scenarioPanel {
+    grid-template-columns: 1fr;
+  }
+
+  .scenarioList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .modePanel {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .modeToggle {
+    width: 100%;
+  }
+
+  .modeButton {
+    width: 100%;
+  }
+}
+
+@media (max-width: 760px) {
+  .scenarioPanel,
+  .modePanel {
+    border-radius: 0.85rem;
+    padding: 0.75rem;
+  }
+
+  .scenarioList {
+    grid-template-columns: 1fr;
+  }
+
+  .modeToggle {
+    grid-template-columns: 1fr;
+    border-radius: 0.75rem;
+  }
+
+  .modeButton {
+    border-radius: 0.55rem;
+  }
+}

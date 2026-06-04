@@ -1,0 +1,44 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  padding: 0.85rem;
+  border: 1px solid #d8dee9;
+  border-radius: 0.85rem;
+  background: #111827;
+  color: #f9fafb;
+  min-height: 100%;
+}
+
+.kicker {
+  margin: 0;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #a7f3d0;
+}
+
+.title {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #ffffff;
+}
+
+.summary {
+  margin: 0;
+  color: #d1d5db;
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.codeBlock {
+  overflow-x: auto;
+  margin: 0;
+  padding: 0.65rem;
+  border-radius: 0.65rem;
+  background: #030712;
+  color: #d1fae5;
+  font-size: 0.68rem;
+  line-height: 1.35;
+}
