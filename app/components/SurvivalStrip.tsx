@@ -1,6 +1,6 @@
 type SurvivalStripProps = {
-  sourceMode?: "semantic" | "non-semantic";
-  mode?: "semantic" | "non-semantic";
+  sourceMode?: "semantic" | "nonSemantic";
+  mode?: "semantic" | "nonSemantic";
 };
 
 const semanticItems = [

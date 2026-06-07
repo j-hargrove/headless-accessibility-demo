@@ -1,4 +1,4 @@
-import { MeaningSource, semanticSource } from "@/app/data/meaningModel";
+import { type MeaningSource, semanticSource } from "@/app/data/meaningModel";
 
 type HumanViewProps = {
   source?: MeaningSource;
@@ -6,20 +6,12 @@ type HumanViewProps = {
 
 export default function HumanView({ source = semanticSource }: HumanViewProps) {
   const scenario = source.scenario;
-
-  const score =
-    "visual" in source.fidelity
-      ? source.fidelity.visual
-      : "human" in source.fidelity
-        ? source.fidelity.human
-        : source.mode === "semantic"
-          ? 95
-          : 86;
+  const score = source.fidelity.visual;
 
   const appointmentType = scenario.appointmentType || "Follow-up visit";
   const careTeam = scenario.careTeam || "Primary care";
   const reason = scenario.reason || "Lab result review";
-  const primaryAction = scenario.primaryAction || "Confirm appointment";
+  const primaryTask = scenario.primaryTask || "Confirm appointment";
 
   return (
     <article className="rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm">
@@ -84,7 +76,7 @@ export default function HumanView({ source = semanticSource }: HumanViewProps) {
 
           <div className="mt-4 flex flex-wrap gap-2">
             <button className="rounded-full bg-zinc-950 px-4 py-2 text-sm font-semibold text-white">
-              {primaryAction}
+              {primaryTask}
             </button>
             <button className="rounded-full border border-zinc-300 bg-white px-4 py-2 text-sm font-semibold text-zinc-800">
               Contact care team

@@ -3,8 +3,8 @@ import { MeaningSource, semanticSource } from "@/app/data/meaningModel";
 type SourceInspectorProps = {
   source?: MeaningSource;
   currentSource?: MeaningSource;
-  sourceMode?: "semantic" | "non-semantic";
-  mode?: "semantic" | "non-semantic";
+  sourceMode?: "semantic" | "nonSemantic";
+  mode?: "semantic" | "nonSemantic";
 };
 
 const semanticSignals = [

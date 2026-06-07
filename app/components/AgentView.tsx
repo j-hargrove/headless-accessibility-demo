@@ -1,8 +1,8 @@
-import { MeaningModel } from "@/app/data/meaningModel";
+import { MeaningSource } from "@/app/data/meaningModel";
 
 type AgentViewProps = {
-  model: MeaningModel;
-  sourceMode: "semantic" | "non-semantic";
+  model: MeaningSource;
+  sourceMode: "semantic" | "nonSemantic";
 };
 
 const semanticFindings = [

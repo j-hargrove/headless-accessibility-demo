@@ -1,24 +1,45 @@
-import {
-  getMeaning PreservationScore,
-  getMeaning PreservationTone,
-  type InterpreterKey,
-  type MeaningMode,
-  type MeaningModel,
-} from "@/app/data/meaningModel";
+import { type MeaningSource } from "@/app/data/meaningModel";
 
-type Meaning PreservationScoreBadgeProps = {
-  interpreter: InterpreterKey;
-  model: MeaningModel;
-  meaningMode: MeaningMode;
+type FidelityTone = "strong" | "mixed" | "weak";
+
+type FidelityScoreBadgeProps = {
+  interpreter: string;
+  model: MeaningSource;
+  meaningMode?: string;
 };
 
-export default function Meaning PreservationScoreBadge({
+function getMeaningPreservationScore(
+  interpreter: string,
+  model: MeaningSource
+): number {
+  const fidelity = model.fidelity as Record<string, number | undefined>;
+  const score = fidelity?.[interpreter];
+
+  if (typeof score !== "number") {
+    return 0;
+  }
+
+  return score;
+}
+
+function getMeaningPreservationTone(score: number): FidelityTone {
+  if (score >= 85) {
+    return "strong";
+  }
+
+  if (score >= 60) {
+    return "mixed";
+  }
+
+  return "weak";
+}
+
+export default function FidelityScoreBadge({
   interpreter,
   model,
-  meaningMode,
-}: Meaning PreservationScoreBadgeProps) {
-  const score = getMeaning PreservationScore(interpreter, model, meaningMode);
-  const tone = getMeaning PreservationTone(score);
+}: FidelityScoreBadgeProps) {
+  const score = getMeaningPreservationScore(interpreter, model);
+  const tone = getMeaningPreservationTone(score);
 
   return (
     <div className={`fidelity-score-badge ${tone}`}>

@@ -16,7 +16,7 @@ export default function HeadlessView({
       appointmentType: source.scenario.appointmentType,
       careTeam: source.scenario.careTeam,
       reason: source.scenario.reason,
-      primaryAction: source.scenario.primaryAction,
+      primaryTask: source.scenario.primaryTask,
     },
     relationships: [
       "appointment type → follow-up visit",
@@ -41,7 +41,7 @@ export default function HeadlessView({
   };
 
   const nonSemanticHeadlessOutput = {
-    source: "non-semantic",
+    source: "nonSemantic",
     interpretation: "weak meaning extraction",
     extractedText: [
       "Appointment Summary",

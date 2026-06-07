@@ -1,4 +1,4 @@
-type SourceMode = "semantic" | "non-semantic";
+type SourceMode = "semantic" | "nonSemantic";
 
 type SourceLayerProps = {
   sourceMode?: SourceMode;
@@ -42,7 +42,7 @@ export default function SourceLayer({
       description: "Structure, labels, roles, and relationships are encoded.",
     },
     {
-      mode: "non-semantic",
+      mode: "nonSemantic",
       title: "Non-Semantic Source",
       description: "Meaning depends mostly on visible presentation.",
     },

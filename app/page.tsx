@@ -12,7 +12,7 @@ import SurvivalStrip from "@/app/components/SurvivalStrip";
 import InterpreterViewGrid from "@/app/components/InterpreterViewGrid";
 import SourceInspector from "@/app/components/SourceInspector";
 
-type SourceMode = "semantic" | "non-semantic";
+type SourceMode = "semantic" | "nonSemantic";
 
 export default function Home() {
   const [selectedMode, setSelectedMode] = useState<SourceMode>("semantic");

@@ -1,145 +1,65 @@
-import { MeaningModel } from "@/app/data/meaningModel";
-import styles from "./InterpretationMeaning PreservationPanel.module.css";
+import { type MeaningSource, semanticSource } from "@/app/data/meaningModel";
 
-type InterpretationMeaning PreservationPanelProps = {
-  meaningModel?: MeaningModel;
-  model?: MeaningModel;
-  selectedMeaningModel?: MeaningModel;
+type InterpretationFidelityPanelProps = {
+  meaningModel?: MeaningSource;
+  model?: MeaningSource;
+  selectedMeaningSource?: MeaningSource;
+  source?: MeaningSource;
 };
 
-type RiskWarning = {
-  severity?: string;
-  message?: string;
-};
-
-type PrimaryAction = {
-  label?: string;
-  intent?: string;
-};
-
-type SystemState = {
-  status?: string;
-  message?: string;
-};
-
-type LooseMeaningModel = Partial<MeaningModel> & {
-  userGoal?: string;
-  primaryAction?: PrimaryAction;
-  systemState?: SystemState;
-  riskWarning?: RiskWarning;
-};
-
-type Meaning PreservationStatus = "preserved" | "partial" | "lost";
-
-function firstText(...values: unknown[]): string {
-  for (const value of values) {
-    if (typeof value === "string" && value.trim().length > 0) {
-      return value.trim();
-    }
-  }
-
-  return "";
-}
-
-function getRiskLevel(severity?: string): Meaning PreservationStatus {
-  const normalizedSeverity = severity?.toLowerCase();
-
-  if (normalizedSeverity === "high" || normalizedSeverity === "danger") {
-    return "lost";
-  }
-
-  if (normalizedSeverity === "medium" || normalizedSeverity === "warning") {
-    return "partial";
-  }
-
-  return "preserved";
-}
-
-function getStatusLabel(status: Meaning PreservationStatus): string {
-  if (status === "preserved") {
-    return "Preserved";
-  }
-
-  if (status === "partial") {
-    return "Partial";
-  }
-
-  return "At risk";
-}
-
-export default function InterpretationMeaning PreservationPanel({
+export default function InterpretationFidelityPanel({
   meaningModel,
   model,
-  selectedMeaningModel,
-}: InterpretationMeaning PreservationPanelProps) {
-  const data = (meaningModel ?? model ?? selectedMeaningModel ?? {}) as LooseMeaningModel;
+  selectedMeaningSource,
+  source,
+}: InterpretationFidelityPanelProps) {
+  const data =
+    source ?? selectedMeaningSource ?? meaningModel ?? model ?? semanticSource;
 
-  const userGoal = firstText(data.userGoal) || "No user goal exposed.";
+  const fidelity = data.fidelity;
 
-  const primaryAction =
-    firstText(data.primaryAction?.label) || "No primary action exposed.";
+  const scores = [
+    { label: "Visual", value: fidelity.visual },
+    { label: "Accessibility", value: fidelity.accessibility },
+    { label: "Agent", value: fidelity.agent },
+    { label: "Headless", value: fidelity.headless },
+  ];
 
-  const primaryIntent =
-    firstText(data.primaryAction?.intent) || "No action intent exposed.";
-
-  const systemStatus = firstText(data.systemState?.status) || "Unknown";
-
-  const systemMessage =
-    firstText(data.systemState?.message) || "No system state message exposed.";
-
-  const riskSeverity = firstText(data.riskWarning?.severity) || "none";
-
-  const riskMessage =
-    firstText(data.riskWarning?.message) || "No risk warning exposed.";
-
-  const riskLevel = getRiskLevel(riskSeverity);
+  const average = Math.round(
+    scores.reduce((total, item) => total + item.value, 0) / scores.length
+  );
 
   return (
-    <section className={styles.section} aria-labelledby="fidelity-title">
-      <div className={styles.header}>
-        <span className={styles.eyebrow}>Meaning Preservation Estimate</span>
-        <h2 id="fidelity-title">Did the meaning survive?</h2>
+    <section className="rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm">
+      <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <p className="text-xs font-medium uppercase tracking-[0.18em] text-zinc-500">
+            Interpretation Fidelity
+          </p>
+          <h2 className="mt-1 text-lg font-semibold text-zinc-950">
+            Did the meaning survive?
+          </h2>
+        </div>
+
+        <div className="rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1 text-xs font-semibold text-zinc-700">
+          {average}% average
+        </div>
       </div>
 
-      <div className={styles.grid}>
-        <article className={`${styles.card} ${styles.preserved}`}>
-          <div className={styles.cardTop}>
-            <span className={styles.cardLabel}>Goal</span>
-            <span className={styles.status}>{getStatusLabel("preserved")}</span>
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {scores.map((score) => (
+          <div
+            key={score.label}
+            className="rounded-xl border border-zinc-200 bg-zinc-50 p-3"
+          >
+            <p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
+              {score.label}
+            </p>
+            <p className="mt-2 text-2xl font-semibold text-zinc-950">
+              {score.value}%
+            </p>
           </div>
-
-          <p>{userGoal}</p>
-        </article>
-
-        <article className={`${styles.card} ${styles.preserved}`}>
-          <div className={styles.cardTop}>
-            <span className={styles.cardLabel}>Action</span>
-            <span className={styles.status}>{getStatusLabel("preserved")}</span>
-          </div>
-
-          <p>{primaryAction}</p>
-          <small>{primaryIntent}</small>
-        </article>
-
-        <article className={`${styles.card} ${styles.partial}`}>
-          <div className={styles.cardTop}>
-            <span className={styles.cardLabel}>State</span>
-            <span className={styles.status}>{getStatusLabel("partial")}</span>
-          </div>
-
-          <p>{systemStatus}</p>
-          <small>{systemMessage}</small>
-        </article>
-
-        <article className={`${styles.card} ${styles[riskLevel]}`}>
-          <div className={styles.cardTop}>
-            <span className={styles.cardLabel}>Risk</span>
-            <span className={styles.status}>{getStatusLabel(riskLevel)}</span>
-          </div>
-
-          <p>{riskSeverity}</p>
-          <small>{riskMessage}</small>
-        </article>
+        ))}
       </div>
     </section>
   );

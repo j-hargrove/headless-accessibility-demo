@@ -3,8 +3,8 @@ import { MeaningSource } from "@/app/data/meaningModel";
 type SourceViewerProps = {
   source?: MeaningSource;
   currentSource?: MeaningSource;
-  sourceMode?: "semantic" | "non-semantic";
-  mode?: "semantic" | "non-semantic";
+  sourceMode?: "semantic" | "nonSemantic";
+  mode?: "semantic" | "nonSemantic";
 };
 
 const semanticSourceExample = `<main aria-labelledby="appointment-title">
@@ -76,7 +76,7 @@ export default function SourceViewer({
       <div className="overflow-hidden rounded-xl border border-zinc-200 bg-zinc-950">
         <div className="flex items-center justify-between border-b border-zinc-800 px-3 py-2">
           <p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
-            {isSemantic ? "semantic-html.tsx" : "non-semantic-html.tsx"}
+            {isSemantic ? "semantic-html.tsx" : "nonSemantic-html.tsx"}
           </p>
           <p className="text-xs font-medium text-zinc-500">
             {isSemantic ? "meaning available" : "meaning inferred"}

@@ -1,6 +1,5 @@
 import {
-  MeaningModel,
-  MeaningSource,
+  type MeaningSource,
   semanticSource,
 } from "@/app/data/meaningModel";
 import VisualView from "./VisualView";
@@ -9,10 +8,10 @@ import AgentView from "./AgentView";
 import HeadlessView from "./HeadlessView";
 
 type InterpreterViewGridProps = {
-  model?: MeaningModel;
+  model?: MeaningSource;
   source?: MeaningSource;
   currentSource?: MeaningSource;
-  sourceMode?: "semantic" | "non-semantic";
+  sourceMode?: "semantic" | "nonSemantic";
 };
 
 export default function InterpreterViewGrid({
@@ -21,7 +20,7 @@ export default function InterpreterViewGrid({
   currentSource,
   sourceMode,
 }: InterpreterViewGridProps) {
-  const activeSource = source ?? currentSource ?? semanticSource;
+  const activeSource = source ?? currentSource ?? model ?? semanticSource;
   const activeSourceMode = sourceMode ?? activeSource.mode;
 
   return (
@@ -45,14 +44,8 @@ export default function InterpreterViewGrid({
 
       <div className="grid items-start gap-4 lg:grid-cols-4">
         <VisualView source={activeSource} />
-        <AccessibilityView
-          model={model as MeaningModel}
-          sourceMode={activeSourceMode}
-        />
-        <AgentView
-          model={model as MeaningModel}
-          sourceMode={activeSourceMode}
-        />
+        <AccessibilityView model={activeSource} sourceMode={activeSourceMode} />
+        <AgentView model={activeSource} sourceMode={activeSourceMode} />
         <HeadlessView source={activeSource} />
       </div>
     </section>
