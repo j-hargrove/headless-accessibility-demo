@@ -84,8 +84,21 @@ export default function SourceLayer({
                   : "border-zinc-200 bg-zinc-50 text-zinc-900 hover:border-zinc-300 hover:bg-white"
               }`}
             >
-              <div className="flex items-start justify-between gap-3">
-                <div>
+              <div className="flex items-start gap-3">
+                <span
+                  className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border ${
+                    isSelected
+                      ? "border-white bg-white"
+                      : "border-zinc-300 bg-white"
+                  }`}
+                  aria-hidden="true"
+                >
+                  {isSelected ? (
+                    <span className="h-2.5 w-2.5 rounded-full bg-zinc-950" />
+                  ) : null}
+                </span>
+
+                <div className="min-w-0">
                   <p
                     className={`text-sm font-semibold ${
                       isSelected ? "text-white" : "text-zinc-950"
@@ -101,19 +114,6 @@ export default function SourceLayer({
                     {option.description}
                   </p>
                 </div>
-
-                <span
-                  className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border ${
-                    isSelected
-                      ? "border-white bg-white"
-                      : "border-zinc-300 bg-white"
-                  }`}
-                  aria-hidden="true"
-                >
-                  {isSelected ? (
-                    <span className="h-2.5 w-2.5 rounded-full bg-zinc-950" />
-                  ) : null}
-                </span>
               </div>
             </button>
           );

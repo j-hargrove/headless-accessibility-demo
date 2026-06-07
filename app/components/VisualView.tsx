@@ -9,7 +9,7 @@ export default function VisualView({ source = semanticSource }: VisualViewProps)
   const score = source.fidelity.visual;
 
   return (
-    <article className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm lg:col-span-2">
+    <article className="rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm">
       <header className="mb-5 border-b border-zinc-100 pb-4">
         <div className="flex items-start justify-between gap-4">
           <div>
