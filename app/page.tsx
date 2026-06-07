@@ -11,6 +11,7 @@ import SourceViewer from "@/app/components/SourceViewer";
 import SurvivalStrip from "@/app/components/SurvivalStrip";
 import InterpreterViewGrid from "@/app/components/InterpreterViewGrid";
 import SourceInspector from "@/app/components/SourceInspector";
+import ProjectSources from "./components/ProjectSources";
 
 type SourceMode = "semantic" | "nonSemantic";
 
@@ -75,6 +76,7 @@ export default function Home() {
           mode={selectedMode}
         />
       </div>
-    </main>
+            <ProjectSources />
+      </main>
   );
 }
