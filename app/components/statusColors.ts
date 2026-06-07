@@ -24,22 +24,26 @@ export function getStatusTone(status: string): SignalTone {
   ];
 
   const mixedStatuses = [
+    "medium confidence",
     "limited",
     "partial",
     "mixed",
     "inferred",
     "ambiguous",
+    "uncertain",
     "degraded",
     "moderate",
   ];
 
   const weakStatuses = [
+    "low confidence",
     "weak",
     "unclear",
     "missing",
     "lost",
     "low",
     "absent",
+    "high risk",
     "not available",
     "not mapped",
   ];

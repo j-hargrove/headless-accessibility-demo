@@ -1,4 +1,5 @@
 import { type MeaningSource, semanticSource } from "@/app/data/meaningModel";
+import ScorePill from "./ScorePill";
 
 type VisualViewProps = {
   source?: MeaningSource;
@@ -21,9 +22,7 @@ export default function VisualView({ source = semanticSource }: VisualViewProps)
             </p>
           </div>
 
-          <div className="shrink-0 rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1 text-xs font-semibold text-zinc-700">
-            {score}%
-          </div>
+          <ScorePill score={score} label="Visual meaning preservation" />
         </div>
 
         <p className="mt-3 text-sm leading-6 text-zinc-600">
