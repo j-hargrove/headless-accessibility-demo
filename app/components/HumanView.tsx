@@ -1,143 +1,102 @@
-import FidelityScoreBadge from "@/app/components/FidelityScoreBadge";
-import MeaningToolbar from "@/app/components/MeaningToolbar";
-import {
-  getInterpreterReports,
-  type MeaningMode,
-  type MeaningModel,
-} from "@/app/data/meaningModel";
+import { MeaningSource, semanticSource } from "@/app/data/meaningModel";
 
 type HumanViewProps = {
-  model: MeaningModel;
-  meaningMode: MeaningMode;
+  source?: MeaningSource;
 };
 
-export default function HumanView({ model, meaningMode }: HumanViewProps) {
-  const reports = getInterpreterReports(model, meaningMode);
-  const isSemanticMode = meaningMode === "semantic";
+export default function HumanView({ source = semanticSource }: HumanViewProps) {
+  const scenario = source.scenario;
+
+  const score =
+    "visual" in source.fidelity
+      ? source.fidelity.visual
+      : "human" in source.fidelity
+        ? source.fidelity.human
+        : source.mode === "semantic"
+          ? 95
+          : 86;
+
+  const appointmentType = scenario.appointmentType || "Follow-up visit";
+  const careTeam = scenario.careTeam || "Primary care";
+  const reason = scenario.reason || "Lab result review";
+  const primaryAction = scenario.primaryAction || "Confirm appointment";
 
   return (
-    <section
-      className={`interpreter-card human-view-card ${
-        !isSemanticMode ? "human-ambiguous-view-card" : ""
-      }`}
-    >
-      <header className="interpreter-card-header">
-        <div className="interpreter-card-title-row">
-          <span className="interpreter-card-icon">◉</span>
-          <h2 className="interpreter-card-title">Human View</h2>
+    <article className="rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm">
+      <header className="mb-4 border-b border-zinc-100 pb-3">
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <h2 className="text-base font-semibold text-zinc-950">
+              Visual View
+            </h2>
+            <p className="mt-1 text-xs font-medium uppercase tracking-[0.18em] text-zinc-500">
+              Meaning Preservation Estimate
+            </p>
+          </div>
+
+          <div className="rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1 text-xs font-semibold text-zinc-700">
+            {score}%
+          </div>
         </div>
 
-        <FidelityScoreBadge
-          interpreter="human"
-          model={model}
-          meaningMode={meaningMode}
-        />
+        <p className="mt-3 text-sm leading-6 text-zinc-600">
+          The visible product remains mostly understandable because sighted
+          users can infer meaning from layout, spacing, and visual hierarchy.
+        </p>
       </header>
 
-      <MeaningToolbar items={reports.human} />
-
-      <div className="interpreter-card-body">
-        <div className="human-ui-panel">
-          <div className="human-ui-meta-row">
-            <span className="human-ui-kicker">
-              {isSemanticMode ? "Product / Scenario" : "Visible Interface"}
-            </span>
-
-            <span
-              className={`human-ui-ready-badge ${
-                !isSemanticMode ? "ambiguous" : ""
-              }`}
-            >
-              {isSemanticMode ? model.systemState.status : "appears actionable"}
-            </span>
-          </div>
-
-          <h3 className="human-ui-heading">{model.userGoal}</h3>
-
-          <p className="human-ui-description">
-            {isSemanticMode
-              ? "The interface gives the user enough context to understand what is happening and what action is available."
-              : "A person can still infer the task from layout, labels, and surrounding text, but the meaning is more fragile and depends on interpretation."}
-          </p>
-
-          <div className="human-ui-status-grid">
-            <div className="human-ui-status-card">
-              <span className="human-ui-status-label">
-                {isSemanticMode ? "Task Readiness" : "User Interpretation"}
-              </span>
-
-              <strong
-                className={`human-ui-status-value ${
-                  !isSemanticMode ? "ambiguous" : ""
-                }`}
-              >
-                {isSemanticMode
-                  ? model.systemState.message
-                  : "Likely understandable from context"}
-              </strong>
+      <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-4">
+        <div className="rounded-xl border border-zinc-200 bg-white p-4 shadow-sm">
+          <div className="mb-4 flex items-start justify-between gap-3">
+            <div>
+              <p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
+                Appointment Summary
+              </p>
+              <h3 className="mt-1 text-lg font-semibold text-zinc-950">
+                {appointmentType}
+              </h3>
             </div>
 
-            <div className="human-ui-status-card">
-              <span className="human-ui-status-label">
-                {isSemanticMode ? "Primary Action" : "Action Recognition"}
-              </span>
-
-              <strong
-                className={`human-ui-status-value ${
-                  !isSemanticMode ? "ambiguous" : ""
-                }`}
-              >
-                {isSemanticMode
-                  ? model.primaryAction.label
-                  : `${model.primaryAction.label} is visible`}
-              </strong>
-            </div>
-          </div>
-
-          <div className="human-ui-chip-row">
-            {isSemanticMode ? (
-              model.requiredInformation.map((item) => (
-                <span key={item}>{item}</span>
-              ))
-            ) : (
-              <>
-                <span>Labels still visible</span>
-                <span>Context inferred from layout</span>
-                <span>Risk requires attention</span>
-                <span>Meaning not portable</span>
-              </>
-            )}
-          </div>
-
-          <div
-            className={`human-ui-risk-banner ${
-              !isSemanticMode ? "ambiguous" : ""
-            }`}
-          >
-            <strong>
-              {isSemanticMode
-                ? `${model.riskWarning.severity} risk`
-                : "risk visible, meaning fragile"}
-            </strong>
-
-            <span>
-              {isSemanticMode
-                ? model.riskWarning.message
-                : "A human may notice the warning, but the interface is relying on visual attention instead of carrying the risk as explicit meaning."}
+            <span className="rounded-full border border-zinc-200 bg-zinc-50 px-2.5 py-1 text-xs font-medium text-zinc-700">
+              Upcoming
             </span>
           </div>
 
-          <div className="human-ui-actions">
-            <button type="button" className="human-ui-primary-button">
-              {model.primaryAction.label}
+          <dl className="space-y-3">
+            <div className="rounded-lg border border-zinc-100 bg-zinc-50 p-3">
+              <dt className="text-xs font-medium uppercase tracking-[0.14em] text-zinc-500">
+                Care team
+              </dt>
+              <dd className="mt-1 text-sm font-medium text-zinc-900">
+                {careTeam}
+              </dd>
+            </div>
+
+            <div className="rounded-lg border border-zinc-100 bg-zinc-50 p-3">
+              <dt className="text-xs font-medium uppercase tracking-[0.14em] text-zinc-500">
+                Reason
+              </dt>
+              <dd className="mt-1 text-sm font-medium text-zinc-900">
+                {reason}
+              </dd>
+            </div>
+          </dl>
+
+          <div className="mt-4 flex flex-wrap gap-2">
+            <button className="rounded-full bg-zinc-950 px-4 py-2 text-sm font-semibold text-white">
+              {primaryAction}
             </button>
-
-            <button type="button" className="human-ui-secondary-button">
-              {isSemanticMode ? "Review" : "Inspect"}
+            <button className="rounded-full border border-zinc-300 bg-white px-4 py-2 text-sm font-semibold text-zinc-800">
+              Contact care team
             </button>
           </div>
         </div>
       </div>
-    </section>
+
+      <p className="mt-3 text-xs leading-5 text-zinc-500">
+        Visual View shows why presentation can still work for sighted users even
+        when the underlying source becomes weaker.
+      </p>
+    </article>
   );
 }

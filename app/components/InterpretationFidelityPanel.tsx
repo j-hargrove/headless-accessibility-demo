@@ -1,7 +1,7 @@
 import { MeaningModel } from "@/app/data/meaningModel";
-import styles from "./InterpretationFidelityPanel.module.css";
+import styles from "./InterpretationMeaning PreservationPanel.module.css";
 
-type InterpretationFidelityPanelProps = {
+type InterpretationMeaning PreservationPanelProps = {
   meaningModel?: MeaningModel;
   model?: MeaningModel;
   selectedMeaningModel?: MeaningModel;
@@ -29,7 +29,7 @@ type LooseMeaningModel = Partial<MeaningModel> & {
   riskWarning?: RiskWarning;
 };
 
-type FidelityStatus = "preserved" | "partial" | "lost";
+type Meaning PreservationStatus = "preserved" | "partial" | "lost";
 
 function firstText(...values: unknown[]): string {
   for (const value of values) {
@@ -41,7 +41,7 @@ function firstText(...values: unknown[]): string {
   return "";
 }
 
-function getRiskLevel(severity?: string): FidelityStatus {
+function getRiskLevel(severity?: string): Meaning PreservationStatus {
   const normalizedSeverity = severity?.toLowerCase();
 
   if (normalizedSeverity === "high" || normalizedSeverity === "danger") {
@@ -55,7 +55,7 @@ function getRiskLevel(severity?: string): FidelityStatus {
   return "preserved";
 }
 
-function getStatusLabel(status: FidelityStatus): string {
+function getStatusLabel(status: Meaning PreservationStatus): string {
   if (status === "preserved") {
     return "Preserved";
   }
@@ -67,11 +67,11 @@ function getStatusLabel(status: FidelityStatus): string {
   return "At risk";
 }
 
-export default function InterpretationFidelityPanel({
+export default function InterpretationMeaning PreservationPanel({
   meaningModel,
   model,
   selectedMeaningModel,
-}: InterpretationFidelityPanelProps) {
+}: InterpretationMeaning PreservationPanelProps) {
   const data = (meaningModel ?? model ?? selectedMeaningModel ?? {}) as LooseMeaningModel;
 
   const userGoal = firstText(data.userGoal) || "No user goal exposed.";
@@ -97,7 +97,7 @@ export default function InterpretationFidelityPanel({
   return (
     <section className={styles.section} aria-labelledby="fidelity-title">
       <div className={styles.header}>
-        <span className={styles.eyebrow}>Interpretation Fidelity</span>
+        <span className={styles.eyebrow}>Meaning Preservation Estimate</span>
         <h2 id="fidelity-title">Did the meaning survive?</h2>
       </div>
 

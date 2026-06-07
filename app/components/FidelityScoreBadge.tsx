@@ -1,28 +1,28 @@
 import {
-  getFidelityScore,
-  getFidelityTone,
+  getMeaning PreservationScore,
+  getMeaning PreservationTone,
   type InterpreterKey,
   type MeaningMode,
   type MeaningModel,
 } from "@/app/data/meaningModel";
 
-type FidelityScoreBadgeProps = {
+type Meaning PreservationScoreBadgeProps = {
   interpreter: InterpreterKey;
   model: MeaningModel;
   meaningMode: MeaningMode;
 };
 
-export default function FidelityScoreBadge({
+export default function Meaning PreservationScoreBadge({
   interpreter,
   model,
   meaningMode,
-}: FidelityScoreBadgeProps) {
-  const score = getFidelityScore(interpreter, model, meaningMode);
-  const tone = getFidelityTone(score);
+}: Meaning PreservationScoreBadgeProps) {
+  const score = getMeaning PreservationScore(interpreter, model, meaningMode);
+  const tone = getMeaning PreservationTone(score);
 
   return (
     <div className={`fidelity-score-badge ${tone}`}>
-      <span className="fidelity-score-label">Fidelity</span>
+      <span className="fidelity-score-label">Meaning Preservation</span>
       <strong className="fidelity-score-value">{score}%</strong>
     </div>
   );

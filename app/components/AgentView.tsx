@@ -1,147 +1,121 @@
-import FidelityScoreBadge from "@/app/components/FidelityScoreBadge";
-import MeaningToolbar from "@/app/components/MeaningToolbar";
-import {
-  getInterpreterReports,
-  type MeaningMode,
-  type MeaningModel,
-} from "@/app/data/meaningModel";
+import { MeaningModel } from "@/app/data/meaningModel";
 
 type AgentViewProps = {
   model: MeaningModel;
-  meaningMode: MeaningMode;
+  sourceMode: "semantic" | "non-semantic";
 };
 
-export default function AgentView({ model, meaningMode }: AgentViewProps) {
-  const reports = getInterpreterReports(model, meaningMode);
+const semanticFindings = [
+  {
+    label: "Detected intent",
+    value: "Review a follow-up appointment and prepare for next action.",
+    status: "High confidence",
+  },
+  {
+    label: "Primary entity",
+    value: "Follow-up visit connected to lab result review.",
+    status: "Identified",
+  },
+  {
+    label: "Available actions",
+    value: "Confirm appointment, review details, contact care team.",
+    status: "Actionable",
+  },
+  {
+    label: "Relationships",
+    value: "Appointment type, reason, and care team are explicitly connected.",
+    status: "Mapped",
+  },
+  {
+    label: "Missing context",
+    value: "User preference and appointment history are not included.",
+    status: "Limited",
+  },
+];
+
+const nonSemanticFindings = [
+  {
+    label: "Detected intent",
+    value: "Likely appointment-related content, inferred from nearby text.",
+    status: "Medium confidence",
+  },
+  {
+    label: "Primary entity",
+    value: "Possible visit or medical task, but source does not define it.",
+    status: "Ambiguous",
+  },
+  {
+    label: "Available actions",
+    value: "Buttons exist, but targets and task outcomes are unclear.",
+    status: "Uncertain",
+  },
+  {
+    label: "Relationships",
+    value: "Text proximity suggests meaning, but relationships are not encoded.",
+    status: "Missing",
+  },
+  {
+    label: "Missing context",
+    value: "Role, labels, hierarchy, and action targets require guessing.",
+    status: "High risk",
+  },
+];
+
+export default function AgentView({ model, sourceMode }: AgentViewProps) {
+  void model;
+
+  const isSemantic = sourceMode === "semantic";
+  const findings = isSemantic ? semanticFindings : nonSemanticFindings;
+  const score = isSemantic ? 84 : 52;
 
   return (
-    <section className="interpreter-card agent-view-card">
-      <header className="interpreter-card-header">
-        <div className="interpreter-card-title-row">
-          <span className="interpreter-card-icon">◇</span>
-          <h2 className="interpreter-card-title">Agent View</h2>
+    <article className="rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm">
+      <header className="mb-4 border-b border-zinc-100 pb-3">
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <h2 className="text-base font-semibold text-zinc-950">
+              Agent View
+            </h2>
+            <p className="mt-1 text-xs font-medium uppercase tracking-[0.18em] text-zinc-500">
+              Meaning Preservation Estimate
+            </p>
+          </div>
+
+          <div className="rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1 text-xs font-semibold text-zinc-700">
+            {score}%
+          </div>
         </div>
 
-        <FidelityScoreBadge
-          interpreter="agent"
-          model={model}
-          meaningMode={meaningMode}
-        />
+        <p className="mt-3 text-sm leading-6 text-zinc-600">
+          {isSemantic
+            ? "The agent can extract intent, entities, actions, and relationships from the source."
+            : "The agent can infer some meaning from text, but must guess relationships and action targets."}
+        </p>
       </header>
 
-      <MeaningToolbar items={reports.agent} />
+      <div className="space-y-2">
+        {findings.map((finding) => (
+          <div
+            key={finding.label}
+            className="rounded-xl border border-zinc-100 bg-zinc-50 p-3"
+          >
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="text-xs font-medium uppercase tracking-[0.14em] text-zinc-500">
+                  {finding.label}
+                </p>
+                <p className="mt-1 text-sm leading-5 text-zinc-800">
+                  {finding.value}
+                </p>
+              </div>
 
-      <div className="interpreter-card-body">
-        <div className="agent-panel">
-          <div className="agent-section">
-            <div className="agent-section-label">Task Interpretation</div>
-            <p className="agent-primary-text">
-              {meaningMode === "semantic"
-                ? model.userGoal
-                : "Probable task inferred from visible labels and layout. Intent is not explicitly encoded."}
-            </p>
-          </div>
-
-          <div className="agent-section">
-            <div className="agent-section-label">Primary Entity</div>
-            <p className="agent-muted-text">
-              {meaningMode === "semantic" ? model.label : "Unconfirmed task context"}
-            </p>
-          </div>
-
-          <div className="agent-section">
-            <div className="agent-section-label">Available Actions</div>
-
-            <ul className="agent-list">
-              <li>{model.primaryAction.label}</li>
-              <li>
-                {meaningMode === "semantic"
-                  ? "Check required information"
-                  : "Infer required information from nearby text"}
-              </li>
-              <li>
-                {meaningMode === "semantic"
-                  ? "Evaluate risk before acting"
-                  : "Risk may be missed or underweighted"}
-              </li>
-            </ul>
-          </div>
-
-          <div className="agent-section-grid">
-            <div className="agent-mini-card">
-              <span className="agent-mini-label">Confidence</span>
-              <strong className="agent-mini-value">
-                {meaningMode === "semantic"
-                  ? model.riskWarning.severity === "high"
-                    ? "Low"
-                    : "Medium"
-                  : "Low"}
-              </strong>
-            </div>
-
-            <div className="agent-mini-card">
-              <span className="agent-mini-label">Risk Level</span>
-              <strong className="agent-mini-value">
-                {meaningMode === "semantic"
-                  ? model.riskWarning.severity
-                  : "uncertain"}
-              </strong>
+              <span className="shrink-0 rounded-full border border-zinc-200 bg-white px-2 py-1 text-[11px] font-medium text-zinc-600">
+                {finding.status}
+              </span>
             </div>
           </div>
-
-          <div className="agent-section">
-            <div className="agent-section-label">
-              {meaningMode === "semantic" ? "Required Context" : "Missing Context"}
-            </div>
-
-            <ul className="agent-list warning">
-              {meaningMode === "semantic" ? (
-                model.requiredInformation.map((item) => <li key={item}>{item}</li>)
-              ) : (
-                <>
-                  <li>Explicit user goal</li>
-                  <li>Action intent</li>
-                  <li>System state meaning</li>
-                  <li>Risk severity</li>
-                </>
-              )}
-            </ul>
-          </div>
-
-          <div className="agent-section">
-            <div className="agent-section-label">Relationships</div>
-
-            <ul className="agent-list">
-              <li>
-                {meaningMode === "semantic"
-                  ? "Intent maps to primary action"
-                  : "Intent must be guessed from label"}
-              </li>
-              <li>
-                {meaningMode === "semantic"
-                  ? "System state affects next step"
-                  : "System state is visually implied"}
-              </li>
-              <li>
-                {meaningMode === "semantic"
-                  ? "Risk warning modifies confidence"
-                  : "Risk relationship is not reliable"}
-              </li>
-            </ul>
-          </div>
-
-          <div className="agent-next-step">
-            <span className="agent-next-step-label">Agent Next Step</span>
-            <strong>
-              {meaningMode === "semantic"
-                ? model.riskWarning.severity === "high"
-                  ? "Verify scope before recommending approval."
-                  : model.primaryAction.intent
-                : "Do not act automatically. Ask for clarification before recommending the next step."}
-            </strong>
-          </div>
-        </div>
+        ))}
       </div>
-    </section>
+    </article>
   );
 }

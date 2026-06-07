@@ -1,229 +1,124 @@
-import FidelityScoreBadge from "@/app/components/FidelityScoreBadge";
-import MeaningToolbar from "@/app/components/MeaningToolbar";
-import {
-  getInterpreterReports,
-  type MeaningMode,
-  type MeaningModel,
-} from "@/app/data/meaningModel";
+import { MeaningModel } from "@/app/data/meaningModel";
 
 type AccessibilityViewProps = {
   model: MeaningModel;
-  meaningMode: MeaningMode;
+  sourceMode: "semantic" | "non-semantic";
 };
+
+const semanticRows = [
+  {
+    label: "Landmark",
+    value: "main region identified",
+    status: "Preserved",
+  },
+  {
+    label: "Heading",
+    value: "Follow-up appointment details",
+    status: "Preserved",
+  },
+  {
+    label: "Labels",
+    value: "appointment type, care team, reason",
+    status: "Preserved",
+  },
+  {
+    label: "Focus order",
+    value: "details before actions",
+    status: "Preserved",
+  },
+  {
+    label: "Relationships",
+    value: "actions connected to appointment",
+    status: "Preserved",
+  },
+];
+
+const nonSemanticRows = [
+  {
+    label: "Landmark",
+    value: "generic container",
+    status: "Weak",
+  },
+  {
+    label: "Heading",
+    value: "visual text only",
+    status: "Unclear",
+  },
+  {
+    label: "Labels",
+    value: "nearby text, not programmatically tied",
+    status: "Missing",
+  },
+  {
+    label: "Focus order",
+    value: "source order does not match task order",
+    status: "Weak",
+  },
+  {
+    label: "Relationships",
+    value: "appointment/action connection inferred visually",
+    status: "Missing",
+  },
+];
 
 export default function AccessibilityView({
   model,
-  meaningMode,
+  sourceMode,
 }: AccessibilityViewProps) {
-  const reports = getInterpreterReports(model, meaningMode);
-  const isSemanticMode = meaningMode === "semantic";
+  void model;
+
+  const isSemantic = sourceMode === "semantic";
+  const rows = isSemantic ? semanticRows : nonSemanticRows;
+  const score = isSemantic ? 90 : 46;
 
   return (
-    <section
-      className={`interpreter-card accessibility-view-card ${
-        !isSemanticMode ? "degraded-view-card" : ""
-      }`}
-    >
-      <header className="interpreter-card-header">
-        <div className="interpreter-card-title-row">
-          <span className="interpreter-card-icon">◎</span>
-          <h2 className="interpreter-card-title">Accessibility View</h2>
-        </div>
-
-        <FidelityScoreBadge
-          interpreter="accessibility"
-          model={model}
-          meaningMode={meaningMode}
-        />
-      </header>
-
-      <MeaningToolbar items={reports.accessibility} />
-
-      <div className="interpreter-card-body">
-        <div className="accessibility-tree-panel">
-          <div className="accessibility-tree-kicker">
-            {isSemanticMode ? "Accessibility Tree" : "Reduced Accessibility Tree"}
+    <article className="rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm">
+      <header className="mb-4 border-b border-zinc-100 pb-3">
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <h2 className="text-base font-semibold text-zinc-950">
+              Accessibility View
+            </h2>
+            <p className="mt-1 text-xs font-medium uppercase tracking-[0.18em] text-zinc-500">
+              Meaning Preservation Estimate
+            </p>
           </div>
 
-          {isSemanticMode ? (
-            <>
-              <div className="accessibility-tree-block">
-                <div className="tree-line">
-                  <span className="tree-role">landmark:</span>
-                  <span className="tree-value">main</span>
-                </div>
-
-                <div className="tree-line">
-                  <span className="tree-role">heading level 1:</span>
-                </div>
-
-                <div className="tree-indent">
-                  <span className="tree-value">{model.userGoal}</span>
-                </div>
-              </div>
-
-              <div className="accessibility-tree-block">
-                <div className="tree-line">
-                  <span className="tree-role">region:</span>
-                  <span className="tree-value">system state</span>
-                </div>
-
-                <div className="tree-indent">
-                  <div className="tree-line">
-                    <span className="tree-role">status:</span>
-                    <span className="tree-value">{model.systemState.status}</span>
-                  </div>
-
-                  <div className="tree-line">
-                    <span className="tree-role">message:</span>
-                    <span className="tree-value">{model.systemState.message}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="accessibility-tree-block">
-                <div className="tree-line">
-                  <span className="tree-role">group:</span>
-                  <span className="tree-value">primary action</span>
-                </div>
-
-                <div className="tree-indent">
-                  <div className="tree-line">
-                    <span className="tree-role">button name:</span>
-                    <span className="tree-value">{model.primaryAction.label}</span>
-                  </div>
-
-                  <div className="tree-line">
-                    <span className="tree-role">button intent:</span>
-                    <span className="tree-value">{model.primaryAction.intent}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="accessibility-tree-block">
-                <div className="tree-line">
-                  <span className="tree-role">group:</span>
-                  <span className="tree-value">required information</span>
-                </div>
-
-                <ul className="tree-list">
-                  {model.requiredInformation.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="accessibility-tree-block tree-alert">
-                <div className="tree-line">
-                  <span className="tree-role">alert:</span>
-                  <span className="tree-value">{model.riskWarning.severity}</span>
-                </div>
-
-                <div className="tree-indent">
-                  <span className="tree-value">{model.riskWarning.message}</span>
-                </div>
-              </div>
-
-              <div className="accessibility-tree-block">
-                <div className="tree-line">
-                  <span className="tree-role">focus order:</span>
-                </div>
-
-                <ol className="tree-list ordered">
-                  <li>scenario selector</li>
-                  <li>source meaning panel</li>
-                  <li>interpreter card header</li>
-                  <li>meaning report toolbar</li>
-                  <li>system state region</li>
-                  <li>primary action button</li>
-                  <li>risk alert</li>
-                </ol>
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="accessibility-tree-block degraded-tree-block">
-                <div className="tree-line">
-                  <span className="tree-role">landmark:</span>
-                  <span className="tree-value">main</span>
-                </div>
-
-                <div className="tree-line">
-                  <span className="tree-role">heading:</span>
-                  <span className="tree-value">Missing semantic goal</span>
-                </div>
-
-                <div className="tree-indent">
-                  <span className="tree-value">
-                    The visible UI may still contain text, but the purpose of the
-                    task is not encoded as portable meaning.
-                  </span>
-                </div>
-              </div>
-
-              <div className="accessibility-tree-block degraded-tree-block">
-                <div className="tree-line">
-                  <span className="tree-role">button:</span>
-                  <span className="tree-value">{model.primaryAction.label}</span>
-                </div>
-
-                <div className="tree-indent">
-                  <div className="tree-line">
-                    <span className="tree-role">intent:</span>
-                    <span className="tree-value">not available</span>
-                  </div>
-
-                  <div className="tree-line">
-                    <span className="tree-role">state dependency:</span>
-                    <span className="tree-value">not available</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="accessibility-tree-block degraded-tree-block">
-                <div className="tree-line">
-                  <span className="tree-role">required information:</span>
-                  <span className="tree-value">not grouped</span>
-                </div>
-
-                <ul className="tree-list">
-                  <li>Context must be reconstructed from nearby labels</li>
-                  <li>Relationship between fields and action is unclear</li>
-                  <li>Constraints are visually present but not semantically bound</li>
-                </ul>
-              </div>
-
-              <div className="accessibility-tree-block tree-alert degraded-tree-block">
-                <div className="tree-line">
-                  <span className="tree-role">alert:</span>
-                  <span className="tree-value">weak or missing relationship</span>
-                </div>
-
-                <div className="tree-indent">
-                  <span className="tree-value">
-                    Risk may be read as ordinary text instead of as a constraint
-                    that changes whether the action is safe.
-                  </span>
-                </div>
-              </div>
-
-              <div className="accessibility-tree-block degraded-tree-block">
-                <div className="tree-line">
-                  <span className="tree-role">focus order:</span>
-                </div>
-
-                <ol className="tree-list ordered">
-                  <li>scenario selector</li>
-                  <li>visible heading or text block</li>
-                  <li>button label</li>
-                  <li>nearby supporting text</li>
-                  <li>possible warning text</li>
-                </ol>
-              </div>
-            </>
-          )}
+          <div className="rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1 text-xs font-semibold text-zinc-700">
+            {score}%
+          </div>
         </div>
+
+        <p className="mt-3 text-sm leading-6 text-zinc-600">
+          {isSemantic
+            ? "Assistive technology can understand structure, labels, order, and task relationships."
+            : "Assistive technology receives text, but much of the structure and task meaning is unavailable."}
+        </p>
+      </header>
+
+      <div className="space-y-2">
+        {rows.map((row) => (
+          <div
+            key={row.label}
+            className="rounded-xl border border-zinc-100 bg-zinc-50 p-3"
+          >
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="text-xs font-medium uppercase tracking-[0.14em] text-zinc-500">
+                  {row.label}
+                </p>
+                <p className="mt-1 text-sm leading-5 text-zinc-800">
+                  {row.value}
+                </p>
+              </div>
+
+              <span className="shrink-0 rounded-full border border-zinc-200 bg-white px-2 py-1 text-[11px] font-medium text-zinc-600">
+                {row.status}
+              </span>
+            </div>
+          </div>
+        ))}
       </div>
-    </section>
+    </article>
   );
 }

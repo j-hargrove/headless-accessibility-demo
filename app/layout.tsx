@@ -2,15 +2,16 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Interpretation Fidelity",
-  description: "One meaning model rendered across four interpreters.",
+  title: "Headless Accessibility Demo",
+  description:
+    "A live demo showing how semantic structure supports accessibility and AI agent interpretation.",
 };
 
-type RootLayoutProps = {
+export default function RootLayout({
+  children,
+}: Readonly<{
   children: React.ReactNode;
-};
-
-export default function RootLayout({ children }: RootLayoutProps) {
+}>) {
   return (
     <html lang="en">
       <body>{children}</body>
