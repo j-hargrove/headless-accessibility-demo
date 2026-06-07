@@ -1,7 +1,4 @@
-import {
-  type MeaningSource,
-  semanticSource,
-} from "@/app/data/meaningModel";
+import { type MeaningSource, semanticSource } from "@/app/data/meaningModel";
 import VisualView from "./VisualView";
 import AccessibilityView from "./AccessibilityView";
 import AgentView from "./AgentView";
@@ -42,7 +39,7 @@ export default function InterpreterViewGrid({
         </span>
       </div>
 
-      <div className="grid items-start gap-4 lg:grid-cols-4">
+      <div className="grid items-start gap-4 lg:grid-cols-2">
         <VisualView source={activeSource} />
         <AccessibilityView model={activeSource} sourceMode={activeSourceMode} />
         <AgentView model={activeSource} sourceMode={activeSourceMode} />
