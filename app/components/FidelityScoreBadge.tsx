@@ -1,11 +1,9 @@
 import { type MeaningSource } from "@/app/data/meaningModel";
-
-type FidelityTone = "strong" | "mixed" | "weak";
+import ScorePill from "./ScorePill";
 
 type FidelityScoreBadgeProps = {
   interpreter: string;
   model: MeaningSource;
-  meaningMode?: string;
 };
 
 function getMeaningPreservationScore(
@@ -22,29 +20,11 @@ function getMeaningPreservationScore(
   return score;
 }
 
-function getMeaningPreservationTone(score: number): FidelityTone {
-  if (score >= 85) {
-    return "strong";
-  }
-
-  if (score >= 60) {
-    return "mixed";
-  }
-
-  return "weak";
-}
-
 export default function FidelityScoreBadge({
   interpreter,
   model,
 }: FidelityScoreBadgeProps) {
   const score = getMeaningPreservationScore(interpreter, model);
-  const tone = getMeaningPreservationTone(score);
 
-  return (
-    <div className={`fidelity-score-badge ${tone}`}>
-      <span className="fidelity-score-label">Meaning Preservation</span>
-      <strong className="fidelity-score-value">{score}%</strong>
-    </div>
-  );
+  return <ScorePill score={score} label={`${interpreter} meaning preservation`} />;
 }

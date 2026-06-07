@@ -1,4 +1,5 @@
 import { type MeaningSource, semanticSource } from "@/app/data/meaningModel";
+import ScorePill from "./ScorePill";
 
 type InterpretationFidelityPanelProps = {
   meaningModel?: MeaningSource;
@@ -41,9 +42,7 @@ export default function InterpretationFidelityPanel({
           </h2>
         </div>
 
-        <div className="rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1 text-xs font-semibold text-zinc-700">
-          {average}% average
-        </div>
+        <ScorePill score={average} label="Average meaning preservation" />
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -52,12 +51,12 @@ export default function InterpretationFidelityPanel({
             key={score.label}
             className="rounded-xl border border-zinc-200 bg-zinc-50 p-3"
           >
-            <p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
-              {score.label}
-            </p>
-            <p className="mt-2 text-2xl font-semibold text-zinc-950">
-              {score.value}%
-            </p>
+            <div className="flex items-center justify-between gap-3">
+              <p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
+                {score.label}
+              </p>
+              <ScorePill score={score.value} label={score.label} />
+            </div>
           </div>
         ))}
       </div>

@@ -12,6 +12,7 @@ import SurvivalStrip from "@/app/components/SurvivalStrip";
 import InterpreterViewGrid from "@/app/components/InterpreterViewGrid";
 import SourceInspector from "@/app/components/SourceInspector";
 import ProjectSources from "./components/ProjectSources";
+import ColorSignalNormalizer from "./components/ColorSignalNormalizer";
 
 type SourceMode = "semantic" | "nonSemantic";
 
@@ -23,6 +24,8 @@ export default function Home() {
   }, [selectedMode]);
 
   return (
+    <>
+      <ColorSignalNormalizer />
     <main className="min-h-screen bg-zinc-50 px-4 py-6 text-zinc-950 sm:px-6 lg:px-8">
       <div className="mx-auto flex max-w-7xl flex-col gap-4">
         <header className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm">
@@ -78,5 +81,6 @@ export default function Home() {
       </div>
             <ProjectSources />
       </main>
+    </>
   );
 }
