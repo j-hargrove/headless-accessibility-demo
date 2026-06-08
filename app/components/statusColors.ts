@@ -1,80 +1,95 @@
-export type SignalTone = "strong" | "mixed" | "weak" | "neutral";
+export function getStatusLabel(status: string) {
+  const normalizedStatus = status.toLowerCase();
 
-export function getScoreTone(score: number): SignalTone {
-  if (score >= 85) return "strong";
-  if (score >= 60) return "mixed";
-  return "weak";
-}
-
-export function getStatusTone(status: string): SignalTone {
-  const value = status.trim().toLowerCase();
-
-  const strongStatuses = [
-    "preserved",
-    "high confidence",
-    "identified",
-    "actionable",
-    "mapped",
-    "clear",
-    "encoded",
-    "available",
-    "understood",
-    "strong",
-    "high",
-  ];
-
-  const mixedStatuses = [
-    "medium confidence",
-    "limited",
-    "partial",
-    "mixed",
-    "inferred",
-    "ambiguous",
-    "uncertain",
-    "degraded",
-    "moderate",
-  ];
-
-  const weakStatuses = [
-    "low confidence",
-    "weak",
-    "unclear",
-    "missing",
-    "lost",
-    "low",
-    "absent",
-    "high risk",
-    "not available",
-    "not mapped",
-  ];
-
-  if (strongStatuses.includes(value)) return "strong";
-  if (mixedStatuses.includes(value)) return "mixed";
-  if (weakStatuses.includes(value)) return "weak";
-
-  return "neutral";
-}
-
-export function getToneClasses(tone: SignalTone): string {
-  if (tone === "strong") {
-    return "border-emerald-300 bg-emerald-50 text-emerald-800";
+  if (
+    normalizedStatus.includes("preserved") ||
+    normalizedStatus.includes("survives") ||
+    normalizedStatus.includes("complete") ||
+    normalizedStatus.includes("clear")
+  ) {
+    return "signal";
   }
 
-  if (tone === "mixed") {
-    return "border-amber-300 bg-amber-50 text-amber-800";
+  if (
+    normalizedStatus.includes("lost") ||
+    normalizedStatus.includes("missing") ||
+    normalizedStatus.includes("absent")
+  ) {
+    return "loss";
   }
 
-  if (tone === "weak") {
-    return "border-rose-300 bg-rose-50 text-rose-800";
+  if (
+    normalizedStatus.includes("degraded") ||
+    normalizedStatus.includes("fragile") ||
+    normalizedStatus.includes("unclear") ||
+    normalizedStatus.includes("risk")
+  ) {
+    return "risk";
   }
 
-  return "border-zinc-300 bg-zinc-50 text-zinc-700";
+  if (
+    normalizedStatus.includes("semantic") ||
+    normalizedStatus.includes("structure") ||
+    normalizedStatus.includes("heading") ||
+    normalizedStatus.includes("label") ||
+    normalizedStatus.includes("role")
+  ) {
+    return "structure";
+  }
+
+  return "status";
 }
 
-export function getScoreClasses(score: number): string {
-  return getToneClasses(getScoreTone(score));
+export function getStatusClasses(status: string) {
+  const normalizedStatus = status.toLowerCase();
+
+  if (
+    normalizedStatus.includes("preserved") ||
+    normalizedStatus.includes("survives") ||
+    normalizedStatus.includes("complete") ||
+    normalizedStatus.includes("clear")
+  ) {
+    return "border-l-emerald-500";
+  }
+
+  if (
+    normalizedStatus.includes("lost") ||
+    normalizedStatus.includes("missing") ||
+    normalizedStatus.includes("absent")
+  ) {
+    return "border-l-red-500";
+  }
+
+  if (
+    normalizedStatus.includes("degraded") ||
+    normalizedStatus.includes("fragile") ||
+    normalizedStatus.includes("unclear") ||
+    normalizedStatus.includes("risk")
+  ) {
+    return "border-l-orange-500";
+  }
+
+  if (
+    normalizedStatus.includes("semantic") ||
+    normalizedStatus.includes("structure") ||
+    normalizedStatus.includes("heading") ||
+    normalizedStatus.includes("label") ||
+    normalizedStatus.includes("role")
+  ) {
+    return "border-l-cyan-500";
+  }
+
+  return "border-l-slate-400";
 }
 
-export function getStatusClasses(status: string): string {
-  return getToneClasses(getStatusTone(status));
+export function getScoreClasses(score: number) {
+  if (score >= 85) {
+    return "border-emerald-200 bg-emerald-50 text-emerald-700";
+  }
+
+  if (score >= 65) {
+    return "border-amber-200 bg-amber-50 text-amber-700";
+  }
+
+  return "border-red-200 bg-red-50 text-red-700";
 }

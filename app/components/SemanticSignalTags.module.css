@@ -1,0 +1,121 @@
+.signalTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.75rem;
+}
+
+.signalTagsCompact {
+  margin-top: 0.5rem;
+  gap: 0.35rem;
+}
+
+.signalTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.42rem;
+  min-height: 1.65rem;
+  padding: 0.34rem 0.52rem 0.34rem 0.44rem;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  border-left: 3px solid rgba(148, 163, 184, 0.55);
+  border-radius: 0.42rem;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(15, 23, 42, 0.58),
+      rgba(15, 23, 42, 0.34)
+    );
+  color: rgba(226, 232, 240, 0.9);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 1px 0 rgba(15, 23, 42, 0.18);
+}
+
+.signalType {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    "Liberation Mono",
+    "Courier New",
+    monospace;
+  font-size: 0.58rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(148, 163, 184, 0.95);
+}
+
+.signalLabel {
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1;
+  color: rgba(241, 245, 249, 0.94);
+}
+
+.signalTag[data-type="entity"] {
+  border-left-color: #38bdf8;
+}
+
+.signalTag[data-type="action"] {
+  border-left-color: #a78bfa;
+}
+
+.signalTag[data-type="state"] {
+  border-left-color: #facc15;
+}
+
+.signalTag[data-type="risk"] {
+  border-left-color: #fb923c;
+}
+
+.signalTag[data-type="missing"] {
+  border-left-color: #ef4444;
+}
+
+.signalTag[data-type="success"] {
+  border-left-color: #22c55e;
+}
+
+.signalTag[data-type="structure"] {
+  border-left-color: #14b8a6;
+}
+
+.signalTag[data-type="semantic"] {
+  border-left-color: #818cf8;
+}
+
+.signalTag[data-type="default"] {
+  border-left-color: rgba(148, 163, 184, 0.7);
+}
+
+.signalTag:hover {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(30, 41, 59, 0.72),
+      rgba(15, 23, 42, 0.48)
+    );
+  border-color: rgba(203, 213, 225, 0.38);
+}
+
+@media (max-width: 720px) {
+  .signalTags {
+    gap: 0.35rem;
+  }
+
+  .signalTag {
+    padding: 0.32rem 0.46rem 0.32rem 0.4rem;
+  }
+
+  .signalType {
+    font-size: 0.54rem;
+  }
+
+  .signalLabel {
+    font-size: 0.68rem;
+  }
+}
