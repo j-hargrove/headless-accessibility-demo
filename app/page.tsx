@@ -49,36 +49,74 @@ export default function Home() {
             </p>
           </header>
 
-          <SourceLayer
-            selectedMode={selectedMode}
-            sourceMode={selectedMode}
-            mode={selectedMode}
-            onModeChange={setSelectedMode}
-            onSourceModeChange={setSelectedMode}
-            setSourceMode={setSelectedMode}
-          />
+          <section className="mt-2">
+            <div className="mb-3 flex items-center gap-4">
+              <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-zinc-200 bg-white text-sm font-semibold text-zinc-950 shadow-sm">
+                01
+              </div>
 
-          <SourceViewer
-            source={source}
-            currentSource={source}
-            sourceMode={selectedMode}
-            mode={selectedMode}
-          />
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.28em] text-zinc-500">
+                  Source
+                </p>
+                <h2 className="text-xl font-semibold tracking-tight text-zinc-950">
+                  The underlying structure being tested
+                </h2>
+              </div>
+            </div>
 
-          <SourceInspector
-            source={source}
-            currentSource={source}
-            sourceMode={selectedMode}
-            mode={selectedMode}
-          />
+            <div className="flex flex-col gap-4">
+              <SourceLayer
+                selectedMode={selectedMode}
+                sourceMode={selectedMode}
+                mode={selectedMode}
+                onModeChange={setSelectedMode}
+                onSourceModeChange={setSelectedMode}
+                setSourceMode={setSelectedMode}
+              />
 
-          <SurvivalStrip sourceMode={selectedMode} mode={selectedMode} />
+              <SourceViewer
+                source={source}
+                currentSource={source}
+                sourceMode={selectedMode}
+                mode={selectedMode}
+              />
 
-          <InterpreterViewGrid
-            source={source}
-            currentSource={source}
-            sourceMode={selectedMode}
-          />
+              <SourceInspector
+                source={source}
+                currentSource={source}
+                sourceMode={selectedMode}
+                mode={selectedMode}
+              />
+            </div>
+          </section>
+
+          <section className="mt-6">
+            <div className="mb-3 flex items-center gap-4">
+              <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-zinc-200 bg-white text-sm font-semibold text-zinc-950 shadow-sm">
+                02
+              </div>
+
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.28em] text-zinc-500">
+                  Interpreter
+                </p>
+                <h2 className="text-xl font-semibold tracking-tight text-zinc-950">
+                  How meaning survives across different views
+                </h2>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-4">
+              <SurvivalStrip sourceMode={selectedMode} mode={selectedMode} />
+
+              <InterpreterViewGrid
+                source={source}
+                currentSource={source}
+                sourceMode={selectedMode}
+              />
+            </div>
+          </section>
         </div>
 
         <ProjectSources />

@@ -41,6 +41,12 @@ const sources = [
       "The living HTML specification that defines the semantic foundation of web documents and applications.",
     href: "https://html.spec.whatwg.org/",
   },
+  {
+    label: "web.dev — The Accessibility Tree",
+    description:
+      "Explains how browsers transform the DOM into an accessibility tree: a semantic representation assistive technologies can interpret.",
+    href: "https://web.dev/articles/the-accessibility-tree",
+  },
 ];
 
 export default function ProjectSources() {
