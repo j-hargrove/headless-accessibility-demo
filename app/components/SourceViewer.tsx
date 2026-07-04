@@ -7,9 +7,9 @@ type SourceViewerProps = {
   mode?: "semantic" | "nonSemantic";
 };
 
-const semanticSourceExample = `<main aria-labelledby="appointment-title">
-  <section aria-describedby="appointment-reason">
-    <h1 id="appointment-title">Follow-up visit</h1>
+const semanticSourceExample = `<main>
+  <article>
+    <h1>Follow-up visit</h1>
 
     <dl>
       <div>
@@ -19,14 +19,14 @@ const semanticSourceExample = `<main aria-labelledby="appointment-title">
 
       <div>
         <dt>Reason</dt>
-        <dd id="appointment-reason">Lab result review</dd>
+        <dd>Lab result review</dd>
       </div>
     </dl>
 
-    <button aria-label="Confirm follow-up appointment">
+    <button type="button">
       Confirm appointment
     </button>
-  </section>
+  </article>
 </main>`;
 
 const nonSemanticSourceExample = `<div>
@@ -76,7 +76,7 @@ export default function SourceViewer({
       <div className="overflow-hidden rounded-xl border border-zinc-200 bg-zinc-950">
         <div className="flex items-center justify-between border-b border-zinc-800 px-3 py-2">
           <p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
-            {isSemantic ? "semantic-html.tsx" : "nonSemantic-html.tsx"}
+            {isSemantic ? "semantic.html" : "nonSemantic.html"}
           </p>
           <p className="text-xs font-medium text-zinc-500">
             {isSemantic ? "meaning available" : "meaning inferred"}
@@ -92,8 +92,8 @@ export default function SourceViewer({
 
       <p className="mt-3 text-xs leading-5 text-zinc-500">
         {isSemantic
-          ? "The source carries labels, hierarchy, relationships, and action intent before any visual styling is applied."
-          : "The source exposes visible text, but labels, hierarchy, relationships, and action intent are not programmatically encoded."}
+          ? "The source encodes structure, hierarchy, and relationships that preserve meaning before any presentation layer is applied."
+          : "The source contains visible text only. Structure, relationships, and intent must be reconstructed from presentation alone."}
       </p>
     </section>
   );
