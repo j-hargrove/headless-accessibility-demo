@@ -43,8 +43,11 @@ const nonSemanticSourceExample = `<div>
     <div>Lab result review</div>
   </div>
 
-  <div>Confirm</div>
-</div>`;
+  <div>
+    <div>Action</div>
+    <div>Confirm appointment</div>
+  </div>
+</div>;
 
 export default function SourceViewer({
   source,
